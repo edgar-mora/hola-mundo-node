@@ -1,0 +1,38 @@
+# kubernetes/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hola-node 
+  labels:
+    app: hola-node 
+spec:
+  replicas: 1              # Puedes ajustar las réplicas
+  selector:
+    matchLabels:
+      app: hola-node 
+  template:
+    metadata:
+      labels:
+        app: hola-node 
+    spec:
+      containers:
+      - name: hola-node
+        # La imagen será reemplazada por Cloud Build en tiempo de ejecución
+        image: northamerica-south1-docker.pkg.dev/pruebas-internas/mifel-pruebas/hola-mundo-node:latest
+        ports:
+        - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hola-node-service
+  labels:
+    app: java-app
+spec:
+  selector:
+    app: hola-node 
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8080
+  type: LoadBalancer # Para exponer la app externamente en GKE

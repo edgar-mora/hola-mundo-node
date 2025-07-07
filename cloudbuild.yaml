@@ -1,0 +1,14 @@
+steps:
+
+# Paso 1: Construir la imagen Docker
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'northamerica-south1-docker.pkg.dev/pruebas-internas/mifel-pruebas/hola-mundo-node:$COMMIT_SHA', '.']
+
+# Paso 2: Subir la imagen Docker a Artifact Registry
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'northamerica-south1-docker.pkg.dev/pruebas-internas/mifel-pruebas/hola-mundo-node:$COMMIT_SHA']
+
+images:
+  - 'northamerica-south1-docker.pkg.dev/pruebas-internas/mifel-pruebas/hola-mundo-node'
+
+
