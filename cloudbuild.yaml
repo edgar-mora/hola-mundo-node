@@ -8,7 +8,17 @@ steps:
 - name: 'gcr.io/cloud-builders/docker'
   args: ['push', 'northamerica-south1-docker.pkg.dev/pruebas-internas/mifel-pruebas/hola-mundo-node:$COMMIT_SHA']
 
+# Paso 3: Desplegar en GKE (actualizar el Deployment con la nueva imagen)
+# Sustituye la imagen en el deployment.yaml con la recién construida
+- name: 'gcr.io/cloud-builders/gke-deploy'
+  args:
+  - run
+  - --filename=deployment.yaml # Ruta a tu archivo de despliegue
+  - --image=northamerica-south1-docker.pkg.dev/pruebas-internas/mifel-pruebas/hola-mundo-node:$COMMIT_SHA
+  - --location=northamerica-south1 				# Zona de tu clúster GKE
+  - --cluster=nodejs-app-cluster 	
+
 images:
-  - 'northamerica-south1-docker.pkg.dev/pruebas-internas/mifel-pruebas/hola-mundo-node'
+- 'northamerica-south1-docker.pkg.dev/pruebas-internas/mifel-pruebas/hola-mundo-node'
 
 
